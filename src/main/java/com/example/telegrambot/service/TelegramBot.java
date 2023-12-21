@@ -113,9 +113,11 @@ public class TelegramBot  extends TelegramLongPollingBot {
                 switch (massageText) {
                     case "/start":
                         startCommandReceived(chatId);
+                        butonGroup(chatId);
+                        sendMessage(chatId," Для перегляду розкладу на тиждень /mySchebule " +
+                                                    " Для перегляду замін /myReplacement ");
                         break;
                     case "/mygroup":
-                        sendMessage(chatId, " Ведіть групу");
                         butonGroup(chatId);
                         break;
                     case "/analisFile":
@@ -132,7 +134,7 @@ public class TelegramBot  extends TelegramLongPollingBot {
                                 " Для анадізу замін /analisReplacement " +
                                 " Для зміни групи введіть /mygroup " +
                                 " Для створення адміна /makeAdmin " +
-                                " Для перегляду пар на тиждень /mySchebule " +
+                                " Для перегляду розкладу на тиждень /mySchebule " +
                                 " Для перегляду замін /myReplacement ");
                         break;
                     case "/mySchebule": {
@@ -178,17 +180,16 @@ public class TelegramBot  extends TelegramLongPollingBot {
 
                     message.setText("Ви вибрали групу групу : " + group.getGroupName());
 
-                    if (userRepository.findById(chatId).isEmpty()){
-                        User user = new User(chatId , group );
-
-                        userRepository.save(user);
-                    }else {
-                        for (User user: users){
-                            if(user.getChatId().equals(chatId)){
+                    if (userRepository.existsUserByChatId(chatId)) {
+                        for (User user : users) {
+                            if (user.getChatId().equals(chatId)) {
                                 user.setGroupss(group);
                                 userRepository.save(user);
                             }
                         }
+                    } else {
+                        User user = new User(chatId, group);
+                        userRepository.save(user);
                     }
                     try {
                         execute(message);
