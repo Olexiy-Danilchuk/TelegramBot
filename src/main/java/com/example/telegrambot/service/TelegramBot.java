@@ -36,17 +36,11 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 @Slf4j
 @Component
@@ -323,27 +317,23 @@ public class TelegramBot  extends TelegramLongPollingBot {
 
     public void readFile() {
 
-        //String csvFilePath = String.valueOf(absolutePath);
-        //String csvFilePath = "\\Schedule.csv";
-//        try (CSVReader reader = new CSVReader(new FileReader(csvFilePath))) {
-//            saveNameGroup(reader);
-//
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException(e);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+
+   //     String csvFilePath = "\\schedule.csv";
+        //String csvFilePath = "../resources/schedule2.csv";
+    //    try (CSVReader reader = new CSVReader(new FileReader(csvFilePath))) {
+    //        saveNameGroup(reader);
+    //    } catch (FileNotFoundException e) {
+     //       throw new RuntimeException(e);
+      //  } catch (IOException e) {
+      //      throw new RuntimeException(e);
+      //  }
 
 
-        ClassLoader classLoader = getClass().getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream("schedule.csv");
-
-        try (CSVReader reader = new CSVReader(new FileReader(String.valueOf(inputStream)))) {
+        String fileName = "schedule2.csv";
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(fileName);
+        try (CSVReader reader = new CSVReader(new InputStreamReader(inputStream))) {
             saveNameGroup(reader);
-            System.out.println("done");
-        } catch (FileNotFoundException e) {
-            System.out.println("Error");
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
