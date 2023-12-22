@@ -317,11 +317,11 @@ public class TelegramBot  extends TelegramLongPollingBot {
         }
     }
 
-
+//A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot
 
     public void readFile() {
-        String csvFilePath = "A:\\Schedule.csv";
-
+        //String csvFilePath = "A:\\Schedule.csv";
+        String csvFilePath = "Schedule.csv";
         try (CSVReader reader = new CSVReader(new FileReader(csvFilePath))) {
             saveNameGroup(reader);
 
