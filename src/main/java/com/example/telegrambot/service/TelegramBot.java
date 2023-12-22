@@ -320,10 +320,10 @@ public class TelegramBot  extends TelegramLongPollingBot {
     }
 
     public void readFile() {
-        String relativePath = "classpath:/static/Schedule.csv";
-        Path absolutePath = Paths.get(relativePath).toAbsolutePath();
+        String csvFilePath = "classpath:/static/Schedule.csv";
+        //Path absolutePath = Paths.get(relativePath).toAbsolutePath();
 
-        String csvFilePath = String.valueOf(absolutePath);
+        //String csvFilePath = String.valueOf(absolutePath);
         //String csvFilePath = "\\Schedule.csv";
         try (CSVReader reader = new CSVReader(new FileReader(csvFilePath))) {
             saveNameGroup(reader);
