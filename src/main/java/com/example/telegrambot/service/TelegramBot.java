@@ -40,6 +40,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -322,11 +323,6 @@ public class TelegramBot  extends TelegramLongPollingBot {
 
     public void readFile() {
 
-       // ClassLoader classLoader = getClass().getClassLoader();
-        // URL resourceUrl = classLoader.getResource("resources/Schedule.csv");
-        //String csvFilePath = resourceUrl.getPath();
-
-
         //String csvFilePath = String.valueOf(absolutePath);
         //String csvFilePath = "\\Schedule.csv";
 //        try (CSVReader reader = new CSVReader(new FileReader(csvFilePath))) {
@@ -338,10 +334,15 @@ public class TelegramBot  extends TelegramLongPollingBot {
 //            throw new RuntimeException(e);
 //        }
 
-        try (CSVReader reader = new CSVReader(new FileReader("../resources/schedule.csv"))) {
-            saveNameGroup(reader);
 
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream("schedule.csv");
+
+        try (CSVReader reader = new CSVReader(new FileReader(String.valueOf(inputStream)))) {
+            saveNameGroup(reader);
+            System.out.println("done");
         } catch (FileNotFoundException e) {
+            System.out.println("Error");
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
