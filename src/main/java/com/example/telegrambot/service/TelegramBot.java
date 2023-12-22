@@ -322,23 +322,23 @@ public class TelegramBot  extends TelegramLongPollingBot {
 
     public void readFile() {
 
-        ClassLoader classLoader = getClass().getClassLoader();
-        URL resourceUrl = classLoader.getResource("resources/Schedule.csv");
-        String csvFilePath = resourceUrl.getPath();
+       // ClassLoader classLoader = getClass().getClassLoader();
+        // URL resourceUrl = classLoader.getResource("resources/Schedule.csv");
+        //String csvFilePath = resourceUrl.getPath();
 
 
         //String csvFilePath = String.valueOf(absolutePath);
         //String csvFilePath = "\\Schedule.csv";
-        try (CSVReader reader = new CSVReader(new FileReader(csvFilePath))) {
-            saveNameGroup(reader);
+//        try (CSVReader reader = new CSVReader(new FileReader(csvFilePath))) {
+//            saveNameGroup(reader);
+//
+//        } catch (FileNotFoundException e) {
+//            throw new RuntimeException(e);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        try (CSVReader reader = new CSVReader(new FileReader("resources/Schedule.csv"))) {
+        try (CSVReader reader = new CSVReader(new FileReader("../resources/schedule.csv"))) {
             saveNameGroup(reader);
 
         } catch (FileNotFoundException e) {
