@@ -178,6 +178,7 @@ public class TelegramBot  extends TelegramLongPollingBot {
                     message.setMessageId((int) messageId);
                     List<User> users = userRepository.findBy();
 
+
                     message.setText("Ви вибрали групу групу : " + group.getGroupName());
 
                     if (userRepository.existsUserByChatId(chatId)) {
