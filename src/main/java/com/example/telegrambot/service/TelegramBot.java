@@ -84,11 +84,12 @@ public class TelegramBot  extends TelegramLongPollingBot {
         listOfCommands.add(new BotCommand("/help", "Допомога"));
         listOfCommands.add(new BotCommand("/analiseFile", "Оновити розклад занять на тиждень"));
         listOfCommands.add(new BotCommand("/myGroup", "Виберіть групу заміни якої ви хочете відслідковувати  "));
-        listOfCommands.add(new BotCommand("/mySchedule", "Виберіть групу розклад якої ви хочете побачити (спочатку треба вибрати групу /mygroup)"));
+        listOfCommands.add(new BotCommand("/mySchedule", "Виберіть групу розклад якої ви хочете побачити (спочатку треба вибрати групу /myGroup)"));
         try {
-            this.execute(new SetMyCommands(listOfCommands, new BotCommandScopeDefault(), null));
+            SetMyCommands setMyCommands = new SetMyCommands(listOfCommands, new BotCommandScopeDefault(), null);
+            this.execute(setMyCommands);
         } catch (TelegramApiException e) {
-            log.error("Error seting bot's command list: " + e.getMessage());
+            //e.printStackTrace();
         }
     }
 
@@ -112,7 +113,7 @@ public class TelegramBot  extends TelegramLongPollingBot {
                     case "/start":
                         startCommandReceived(chatId);
                         butonGroup(chatId);
-                        sendMessage(chatId," Для перегляду розкладу на тиждень /mySchebule " +
+                        sendMessage(chatId," Для перегляду розкладу на тиждень /mySchedule " +
                                                     " Для перегляду замін /myReplacement ");
                         break;
                     case "/myGroup":
@@ -294,7 +295,7 @@ public class TelegramBot  extends TelegramLongPollingBot {
     }
 
     private void startCommandReceived(Long chatId) {
-        String answer = "Доброго дня! Для перегляду команд введіть /hellp";
+        String answer = "Доброго дня! Для перегляду команд введіть /help";
         var users = userRepository.findAll();
         if (users.size() == 0) {
             User user = new User(chatId, true);
