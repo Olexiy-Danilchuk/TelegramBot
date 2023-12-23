@@ -81,10 +81,10 @@ public class TelegramBot  extends TelegramLongPollingBot {
         this.config = config;
         List<BotCommand> listOfCommands = new ArrayList<>();
         listOfCommands.add(new BotCommand("/start", "Розпочати роботу з ботом"));
-        listOfCommands.add(new BotCommand("/hellp", "Допомога"));
-        listOfCommands.add(new BotCommand("/analisFile", "Оновити розклад занять на тиждень"));
-        listOfCommands.add(new BotCommand("/mygroup", "Виберіть групу заміни якої ви хочете відслідковувати  "));
-        listOfCommands.add(new BotCommand("/mySchebule", "Виберіть групу розклад якої ви хочете побачити (спочатку треба вибрати групу /mygroup)"));
+        listOfCommands.add(new BotCommand("/help", "Допомога"));
+        listOfCommands.add(new BotCommand("/analiseFile", "Оновити розклад занять на тиждень"));
+        listOfCommands.add(new BotCommand("/myGroup", "Виберіть групу заміни якої ви хочете відслідковувати  "));
+        listOfCommands.add(new BotCommand("/mySchedule", "Виберіть групу розклад якої ви хочете побачити (спочатку треба вибрати групу /mygroup)"));
         try {
             this.execute(new SetMyCommands(listOfCommands, new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
