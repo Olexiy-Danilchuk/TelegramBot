@@ -115,10 +115,10 @@ public class TelegramBot  extends TelegramLongPollingBot {
                         sendMessage(chatId," Для перегляду розкладу на тиждень /mySchebule " +
                                                     " Для перегляду замін /myReplacement ");
                         break;
-                    case "/mygroup":
+                    case "/myGroup":
                         butonGroup(chatId);
                         break;
-                    case "/analisFile":
+                    case "/analiseFile":
                         if(isUserAdmin(chatId) == true){
                             readFile();
                             sendMessageAll("Розклад оновлено!");
@@ -126,20 +126,20 @@ public class TelegramBot  extends TelegramLongPollingBot {
                             sendMessage(chatId,"Ви не являєтесь адміном");
                         }
                         break;
-                    case "/hellp":
+                    case "/help":
                         sendMessage(chatId, " Для початку роботи введіть /start " +
-                                " Для аналізу предметів  /analisFile " +
-                                " Для анадізу замін /analisReplacement " +
-                                " Для зміни групи введіть /mygroup " +
+                                " Для аналізу предметів  /analiseFile " +
+                                " Для анадізу замін /analiseReplacement " +
+                                " Для зміни групи введіть /myGroup " +
                                 " Для створення адміна /makeAdmin " +
-                                " Для перегляду розкладу на тиждень /mySchebule " +
+                                " Для перегляду розкладу на тиждень /mySchedule " +
                                 " Для перегляду замін /myReplacement ");
                         break;
-                    case "/mySchebule": {
+                    case "/mySchedule": {
                         scheduleForUser(chatId);
                         break;
                     }
-                    case "/analisReplacement": {
+                    case "/analiseReplacement": {
                         if(isUserAdmin(chatId) == true){
                             analisFileReplacement();
                             sendMessageAll("Заміни оновлено!");
