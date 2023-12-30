@@ -28,16 +28,4 @@ public class Teacher {
         this.nameTeacher = nameTeacher;
     }
 
-    public Teacher(String nameTeacher) {
-        this.nameTeacher = nameTeacher;
-    }
-
-    @Override
-    public String toString() {
-        return "Teacher{" +
-                "id=" + id +
-                ", nameTeacher='" + nameTeacher + '\'' +
-                ", lessons=" + schedules +
-                '}';
-    }
 }

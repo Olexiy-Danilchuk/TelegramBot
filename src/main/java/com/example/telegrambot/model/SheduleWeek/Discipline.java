@@ -24,15 +24,4 @@ public class Discipline {
         this.lecture = lecture;
     }
 
-    public Discipline(String lecture) {
-        this.lecture = lecture;
-    }
-
-    @Override
-    public String toString() {
-        return "Leson{" +
-                "id=" + id +
-                ", lecture='" + lecture + '\'' +
-                '}';
-    }
 }

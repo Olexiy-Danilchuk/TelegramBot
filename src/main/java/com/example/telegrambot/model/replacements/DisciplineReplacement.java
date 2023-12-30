@@ -2,9 +2,7 @@ package com.example.telegrambot.model.replacements;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 
@@ -29,15 +27,4 @@ public class DisciplineReplacement {
         this.lectureReplacement = lectureReplacement;
     }
 
-    public DisciplineReplacement(String lectureReplacement) {
-        this.lectureReplacement = lectureReplacement;
-    }
-
-    @Override
-    public String toString() {
-        return "Leson{" +
-                "id=" + id +
-                ", lecture='" + lectureReplacement + '\'' +
-                '}';
-    }
 }

@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-
 @Entity
 @Data
 @NoArgsConstructor
@@ -25,28 +24,14 @@ public class ScheduleReplacement {
 
     @ManyToOne
     @JoinColumn(name = "group_Replacement_id")
-    private GroupssReplacement groupReplacement;
+    private GroupsReplacement groupReplacement;
 
-    public ScheduleReplacement(Long id, DisciplineReplacement disciplineReplacement, TeacherReplacement teacherReplacement) {
-        this.id = id;
-        this.disciplineReplacement = disciplineReplacement;
-        this.teacherReplacement = teacherReplacement;
-    }
 
-    public ScheduleReplacement(Long id, DisciplineReplacement disciplineReplacement, TeacherReplacement teacherReplacement, GroupssReplacement groupReplacement) {
+    public ScheduleReplacement(Long id, DisciplineReplacement disciplineReplacement, TeacherReplacement teacherReplacement, GroupsReplacement groupReplacement) {
         this.id = id;
         this.disciplineReplacement = disciplineReplacement;
         this.teacherReplacement = teacherReplacement;
         this.groupReplacement = groupReplacement;
     }
 
-
-    @Override
-    public String toString() {
-        return "Lesson{" +
-                "id=" + id +
-                ", discipline=" + disciplineReplacement +
-                ", teacher=" + teacherReplacement +
-                '}';
-    }
 }

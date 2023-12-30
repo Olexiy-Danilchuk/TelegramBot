@@ -1,7 +1,6 @@
 package com.example.telegrambot.model;
 
-import com.example.telegrambot.model.SheduleWeek.Groupss;
-import com.example.telegrambot.model.replacements.GroupssReplacement;
+import com.example.telegrambot.model.SheduleWeek.Groups;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +24,7 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "groupss_id")
-    private Groupss groupss;
+    private Groups groups;
 
     private Boolean admin;
 
@@ -41,16 +40,16 @@ public class User {
         this.admin = admin;
     }
 
-    public User(Long chatId, Groupss groupss) {
+    public User(Long chatId, Groups groups) {
         this.chatId = chatId;
-        this.groupss = groupss;
+        this.groups = groups;
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", group=" + groupss +
+                ", group=" + groups +
                 ", admin=" + admin +
                 //", notified=" + notified +
                 '}';

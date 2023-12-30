@@ -27,32 +27,13 @@ public class Schedule {
 
     @ManyToOne
     @JoinColumn(name = "group_id")
-    private Groupss group;
+    private Groups group;
 
-    public Schedule(Long id, Discipline discipline, Teacher teacher) {
-        this.id = id;
-        this.discipline = discipline;
-        this.teacher = teacher;
-    }
-
-    public Schedule(Long id, Discipline discipline, Teacher teacher,  Groupss group) {
+    public Schedule(Long id, Discipline discipline, Teacher teacher, Groups group) {
         this.id = id;
         this.discipline = discipline;
         this.teacher = teacher;
         this.group = group;
     }
 
-    public Schedule(Discipline discipline, Teacher teacher) {
-        this.discipline = discipline;
-        this.teacher = teacher;
-    }
-
-    @Override
-    public String toString() {
-        return "Lesson{" +
-                "id=" + id +
-                ", discipline=" + discipline +
-                ", teacher=" + teacher +
-                '}';
-    }
 }
