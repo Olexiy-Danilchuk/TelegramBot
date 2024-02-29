@@ -1,27 +1,18 @@
 package com.example.telegrambot.service;
 
 import com.example.telegrambot.config.BotConfig;
-import com.example.telegrambot.model.*;
-import com.example.telegrambot.model.SheduleWeek.Discipline;
 import com.example.telegrambot.model.SheduleWeek.Groups;
 import com.example.telegrambot.model.SheduleWeek.Schedule;
-import com.example.telegrambot.model.SheduleWeek.Teacher;
-import com.example.telegrambot.model.replacements.DisciplineReplacement;
+import com.example.telegrambot.model.User;
 import com.example.telegrambot.model.replacements.GroupsReplacement;
 import com.example.telegrambot.model.replacements.ScheduleReplacement;
-import com.example.telegrambot.model.replacements.TeacherReplacement;
-import com.example.telegrambot.repo.*;
-import com.example.telegrambot.repo.ScheduleWeek.DisciplineRepository;
 import com.example.telegrambot.repo.ScheduleWeek.GroupsRepository;
 import com.example.telegrambot.repo.ScheduleWeek.ScheduleRepository;
-import com.example.telegrambot.repo.ScheduleWeek.TeacherRepository;
-import com.example.telegrambot.repo.replacements.DisciplineReplacementRepository;
+import com.example.telegrambot.repo.UserRepository;
 import com.example.telegrambot.repo.replacements.GroupsReplacementRepository;
 import com.example.telegrambot.repo.replacements.ScheduleReplacementRepository;
-import com.example.telegrambot.repo.replacements.TeacherReplacementRepository;
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,8 +26,8 @@ import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScope
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.generics.BotSession;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,39 +36,27 @@ import java.util.Optional;
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
 
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private TeacherRepository teacherRepository;
-
-    @Autowired
-    private ScheduleRepository scheduleRepository;
-
-    @Autowired
-    private GroupsRepository groupsRepository;
-
-    @Autowired
-    private DisciplineRepository disciplineRepository;
-
-    @Autowired
-    private DisciplineReplacementRepository disciplineReplacementRepository;
-
-    @Autowired
-    private GroupsReplacementRepository groupsReplacementRepository;
-
-    @Autowired
-    private ScheduleReplacementRepository scheduleReplacementRepository;
-
-    @Autowired
-    private TeacherReplacementRepository teacherReplacementRepository;
-
-
+    private final UserRepository userRepository;
+    private final GroupsRepository groupsRepository;
+    private final GroupsReplacementRepository groupsReplacementRepository;
+    private final ScheduleReplacementRepository scheduleReplacementRepository;
+    private final FileService fileService;
     final BotConfig config;
+    private final ScheduleRepository scheduleRepository;
 
-
-    public TelegramBot(BotConfig config) {
+    @Autowired
+    public TelegramBot(UserRepository userRepository,
+                       GroupsRepository groupsRepository,
+                       GroupsReplacementRepository groupsReplacementRepository, ScheduleReplacementRepository scheduleReplacementRepository, FileService fileService,
+                       BotConfig config, ScheduleRepository scheduleRepository) {
+        this.userRepository = userRepository;
+        this.groupsRepository = groupsRepository;
+        this.groupsReplacementRepository = groupsReplacementRepository;
+        this.scheduleReplacementRepository = scheduleReplacementRepository;
+        this.fileService = fileService;
         this.config = config;
+        this.scheduleRepository = scheduleRepository;
         List<BotCommand> listOfCommands = new ArrayList<>();
         listOfCommands.add(new BotCommand("/start", "Розпочати роботу з ботом"));
         listOfCommands.add(new BotCommand("/help", "Допомога"));
@@ -88,9 +67,30 @@ public class TelegramBot extends TelegramLongPollingBot {
             SetMyCommands setMyCommands = new SetMyCommands(listOfCommands, new BotCommandScopeDefault(), null);
             this.execute(setMyCommands);
         } catch (TelegramApiException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public String getBotUsername() {
@@ -111,16 +111,17 @@ public class TelegramBot extends TelegramLongPollingBot {
             switch (massageText) {
                 case "/start":
                     startCommandReceived(chatId);
-                    butonGroup(chatId);
+                    buttonGroup(chatId);
                     sendMessage(chatId, " Для перегляду розкладу на тиждень /mySchedule " +
                             " Для перегляду замін /myReplacement ");
                     break;
                 case "/myGroup":
-                    butonGroup(chatId);
+                    buttonGroup(chatId);
                     break;
                 case "/analiseFile":
                     if (isUserAdmin(chatId) == true) {
-                        readFile();
+                       // readFile();
+                        fileService.readFile();
                         sendMessageAll("Розклад оновлено!");
                     } else {
                         sendMessage(chatId, "Ви не являєтесь адміном");
@@ -141,7 +142,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 }
                 case "/analiseReplacement": {
                     if (isUserAdmin(chatId) == true) {
-                        analiseFileReplacement();
+                        fileService.analiseFileReplacement();
                         sendMessageAll("Заміни оновлено!");
                     } else {
                         sendMessage(chatId, "Ви не являєтесь адміном");
@@ -221,8 +222,61 @@ public class TelegramBot extends TelegramLongPollingBot {
         });
     }
 
+    private void startCommandReceived(Long chatId) {
+        String answer = "Доброго дня! Для перегляду команд введіть /help";
+        var users = userRepository.findAll();
+        if (users.size() == 0) {
+            User user = new User(chatId, true);
+            userRepository.save(user);
+        }
+        sendMessage(chatId, answer);
+    }
 
-    private void scheduleForUser(Long chatId) {
+    public void sendMessage(Long chatId, String textToSend) {
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+        message.setText(textToSend);
+
+        try {
+            execute(message);
+
+        } catch (TelegramApiException e) {
+            log.error("Error occurred: " + e.getMessage());
+        }
+    }
+    @Transactional
+    public void sendMessageAll(String text) {
+        var users = userRepository.findAll();
+        for (User user : users) {
+            sendMessage(user.getChatId(), text);
+        }
+    }
+    public void replacementForUser(Long chatId) {
+        List<User> users = userRepository.findBy();
+        List<ScheduleReplacement> schedulesReplacement = scheduleReplacementRepository.findBy();
+        List<GroupsReplacement> groupsReplacements = groupsReplacementRepository.findBy();
+
+        int numberLeson = 1;
+
+        for (User user : users) {
+            if (user.getGroups().getGroupName() != null && user.getChatId().equals(chatId)) {
+                for (GroupsReplacement groupsReplacement : groupsReplacements) {
+                    if (user.getGroups().getGroupName().equals(groupsReplacement.getGroupNameReplacement())) {
+                        for (ScheduleReplacement schedule : schedulesReplacement) {
+                            if (schedule.getGroupReplacement().getGroupNameReplacement().equals(user.getGroups().getGroupName())) {
+                                if (!schedule.getDisciplineReplacement().getLectureReplacement().equals("") && !schedule.getTeacherReplacement().getNameTeacherReplacement().equals("")) {
+                                    String text = numberLeson + " -- " + schedule.getDisciplineReplacement().getLectureReplacement() + " -- " + schedule.getTeacherReplacement().getNameTeacherReplacement();
+                                    sendMessage(chatId, text);
+                                }
+                                numberLeson++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public void scheduleForUser(Long chatId) {
         List<User> users = userRepository.findBy();
         List<Schedule> schedules = scheduleRepository.findBy();
 
@@ -237,7 +291,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 for (Schedule schedule : schedules) {
                     if (schedule.getGroup().getGroupName().equals(user.getGroups().getGroupName())) {
                         if (day % 5 == 0) {
-                            sendMessage(chatId, nameDay[dayName++]);
+                           sendMessage(chatId, nameDay[dayName++]);
                         }
                         if (numberLeson > 5) {
                             numberLeson = 1;
@@ -254,8 +308,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
 
     }
-
-    private void butonGroup(long chatId) {
+    public void buttonGroup(long chatId) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText("Виберіть групу : ");
@@ -294,193 +347,4 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
 
     }
-
-    private void startCommandReceived(Long chatId) {
-        String answer = "Доброго дня! Для перегляду команд введіть /help";
-        var users = userRepository.findAll();
-        if (users.size() == 0) {
-            User user = new User(chatId, true);
-            userRepository.save(user);
-        }
-        sendMessage(chatId, answer);
-    }
-
-    private void sendMessage(Long chatid, String textToSend) {
-        SendMessage message = new SendMessage();
-        message.setChatId(String.valueOf(chatid));
-        message.setText(textToSend);
-
-        try {
-            execute(message);
-        } catch (TelegramApiException e) {
-            log.error("Error occurred: " + e.getMessage());
-        }
-    }
-
-    public void readFile() {
-
-        String fileName = "schedule2.csv";
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(fileName);
-        try (CSVReader reader = new CSVReader(new InputStreamReader(inputStream))) {
-            saveNameGroup(reader);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
-    }
-
-    @Transactional
-    public void sendMessageAll(String text) {
-        var users = userRepository.findAll();
-        for (User user : users) {
-            sendMessage(user.getChatId(), text);
-        }
-    }
-
-    @Transactional
-    public void saveNameGroup(CSVReader reader) {
-        try {
-            List<String[]> allRows = new ArrayList<>();
-            String[] row;
-            while ((row = reader.readNext()) != null) {
-                allRows.add(row);
-            }
-            int i = 0;
-            for (String rows : allRows.get(0)) {
-                Groups group = new Groups(Long.valueOf(i + 1), allRows.get(0)[i]);
-                i++;
-                groupsRepository.save(group);
-            }
-            saveLectures(allRows);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (CsvValidationException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    @Transactional
-    public void saveLectures(List<String[]> allRows) {
-        List<Groups> groups = groupsRepository.findBy();
-        int n = 0;
-        for (int i = 0; i < groups.size(); i++) {
-            readGroups(allRows, i, groups.get(i), n);
-            n = n + 25;
-        }
-    }
-
-    @Transactional
-    public void readGroups(List<String[]> allRows, int groupID, Groups groups, int n) {
-        int i = 1;
-        int x = 1 + n;
-        for (int f = 1; f <= (allRows.size() - 1) / 2; f++) {
-            Discipline discipline = new Discipline(Long.valueOf(x), allRows.get(i)[groupID]);
-            Teacher teacher = new Teacher(Long.valueOf(x), allRows.get(i + 1)[groupID]);
-            Schedule schedule = new Schedule(Long.valueOf(x), discipline, teacher, groups);
-
-
-            teacherRepository.save(teacher);
-            disciplineRepository.save(discipline);
-            scheduleRepository.save(schedule);
-            x++;
-            i = i + 2;
-        }
-
-    }
-
-    public void analiseFileReplacement() {
-
-        String fileName = "replacement.csv";
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(fileName);
-        try (CSVReader reader = new CSVReader(new InputStreamReader(inputStream))) {
-            saveGroupReplacement(reader);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    @Transactional
-    public void saveGroupReplacement(CSVReader reader) {
-        try {
-            List<String[]> allRows = new ArrayList<>();
-            String[] row;
-            while ((row = reader.readNext()) != null) {
-                allRows.add(row);
-            }
-            int i = 0;
-            for (String rows : allRows.get(0)) {
-                GroupsReplacement groupsReplacement = new GroupsReplacement(Long.valueOf(i + 1), allRows.get(0)[i]);
-                i++;
-                groupsReplacementRepository.save(groupsReplacement);
-            }
-            saveReplacemt(allRows);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (CsvValidationException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    @Transactional
-    public void saveReplacemt(List<String[]> allRows) {
-        List<GroupsReplacement> groupsReplacements = groupsReplacementRepository.findBy();
-        int n = 0;
-        for (int i = 0; i < groupsReplacements.size(); i++) {
-            readReplacement(allRows, i, groupsReplacements.get(i), n);
-            n = n + 5;
-        }
-    }
-
-    @Transactional
-    public void readReplacement(List<String[]> allRows, int groupID, GroupsReplacement groupsReplacements, int n) {
-        int i = 1;
-        int x = 1 + n;
-        int a = 0;
-        for (int f = 1; f <= (allRows.size() - 1) / 2; f++) {
-            DisciplineReplacement disciplineReplacement = new DisciplineReplacement(Long.valueOf(x), allRows.get(i)[groupID]);
-
-            TeacherReplacement teacherReplacement = new TeacherReplacement(Long.valueOf(x), allRows.get(i + 1)[groupID]);
-            ScheduleReplacement scheduleReplacement = new ScheduleReplacement(Long.valueOf(x), disciplineReplacement, teacherReplacement, groupsReplacements);
-
-            teacherReplacementRepository.save(teacherReplacement);
-            disciplineReplacementRepository.save(disciplineReplacement);
-            scheduleReplacementRepository.save(scheduleReplacement);
-
-            x++;
-            i = i + 2;
-        }
-    }
-
-    private void replacementForUser(Long chatId) {
-        List<User> users = userRepository.findBy();
-        List<ScheduleReplacement> schedulesReplacement = scheduleReplacementRepository.findBy();
-        List<GroupsReplacement> groupsReplacements = groupsReplacementRepository.findBy();
-
-        int numberLeson = 1;
-
-        for (User user : users) {
-            if (user.getGroups().getGroupName() != null && user.getChatId().equals(chatId)) {
-                for (GroupsReplacement groupsReplacement : groupsReplacements) {
-                    if (user.getGroups().getGroupName().equals(groupsReplacement.getGroupNameReplacement())) {
-                        for (ScheduleReplacement schedule : schedulesReplacement) {
-                            if (schedule.getGroupReplacement().getGroupNameReplacement().equals(user.getGroups().getGroupName())) {
-                                if (!schedule.getDisciplineReplacement().getLectureReplacement().equals("") && !schedule.getTeacherReplacement().getNameTeacherReplacement().equals("")) {
-                                    String text = numberLeson + " -- " + schedule.getDisciplineReplacement().getLectureReplacement() + " -- " + schedule.getTeacherReplacement().getNameTeacherReplacement();
-                                    sendMessage(chatId, text);
-                                }
-                                numberLeson++;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
 }
