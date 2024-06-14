@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class PingController {
 
     @GetMapping("/ping")
-    public String pingGet (){
+    public String pingGet() {
         log.info("Life get");
         return "ok get";
     }
 
     @RequestMapping(method = RequestMethod.HEAD, path = "/ping")
-    public String pingHead (){
+    public String pingHead() {
         log.info("Life head");
         return "ok head";
     }

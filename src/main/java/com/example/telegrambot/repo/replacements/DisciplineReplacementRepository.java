@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface DisciplineReplacementRepository extends JpaRepository<DisciplineReplacement,Long> {
+public interface DisciplineReplacementRepository extends JpaRepository<DisciplineReplacement, Long> {
     List<DisciplineReplacement> findBy();
 }

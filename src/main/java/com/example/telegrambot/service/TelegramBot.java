@@ -12,7 +12,6 @@ import com.example.telegrambot.repo.UserRepository;
 import com.example.telegrambot.repo.replacements.GroupsReplacementRepository;
 import com.example.telegrambot.repo.replacements.ScheduleReplacementRepository;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +25,6 @@ import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScope
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.meta.generics.BotSession;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,26 +70,6 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Override
     public String getBotUsername() {
         return config.getBotName();
@@ -120,7 +98,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                     break;
                 case "/analiseFile":
                     if (isUserAdmin(chatId) == true) {
-                       // readFile();
+                        // readFile();
                         fileService.readFile();
                         sendMessageAll("Розклад оновлено!");
                     } else {
@@ -244,6 +222,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             log.error("Error occurred: " + e.getMessage());
         }
     }
+
     @Transactional
     public void sendMessageAll(String text) {
         var users = userRepository.findAll();
@@ -251,6 +230,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             sendMessage(user.getChatId(), text);
         }
     }
+
     public void replacementForUser(Long chatId) {
         List<User> users = userRepository.findBy();
         List<ScheduleReplacement> schedulesReplacement = scheduleReplacementRepository.findBy();
@@ -276,6 +256,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
         }
     }
+
     public void scheduleForUser(Long chatId) {
         List<User> users = userRepository.findBy();
         List<Schedule> schedules = scheduleRepository.findBy();
@@ -291,7 +272,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 for (Schedule schedule : schedules) {
                     if (schedule.getGroup().getGroupName().equals(user.getGroups().getGroupName())) {
                         if (day % 5 == 0) {
-                           sendMessage(chatId, nameDay[dayName++]);
+                            sendMessage(chatId, nameDay[dayName++]);
                         }
                         if (numberLeson > 5) {
                             numberLeson = 1;
@@ -308,6 +289,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
 
     }
+
     public void buttonGroup(long chatId) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));

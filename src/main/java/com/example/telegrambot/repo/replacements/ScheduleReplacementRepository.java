@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ScheduleReplacementRepository extends JpaRepository<ScheduleReplacement,Long> {
+public interface ScheduleReplacementRepository extends JpaRepository<ScheduleReplacement, Long> {
     List<ScheduleReplacement> findBy();
 }

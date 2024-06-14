@@ -52,7 +52,8 @@ public class FileService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-}
+    }
+
     @Transactional
     public void saveNameGroup(CSVReader reader) {
         try {
@@ -85,6 +86,7 @@ public class FileService {
             n = n + 25;
         }
     }
+
     @Transactional
     public void readGroups(List<String[]> allRows, int groupID, Groups groups, int n) {
         int i = 1;
@@ -103,6 +105,7 @@ public class FileService {
         }
 
     }
+
     public void analiseFileReplacement() {
 
         String fileName = "replacement.csv";
@@ -115,7 +118,6 @@ public class FileService {
         }
 
     }
-
 
 
 }

@@ -29,10 +29,9 @@ public class ReplacementService {
     private final TeacherReplacementRepository teacherReplacementRepository;
 
 
-
     @Autowired
     public ReplacementService(DisciplineReplacementRepository disciplineReplacementRepository, GroupsReplacementRepository groupsReplacementRepository,
-                              ScheduleReplacementRepository scheduleReplacementRepository, TeacherReplacementRepository teacherReplacementRepository){
+                              ScheduleReplacementRepository scheduleReplacementRepository, TeacherReplacementRepository teacherReplacementRepository) {
         this.disciplineReplacementRepository = disciplineReplacementRepository;
         this.groupsReplacementRepository = groupsReplacementRepository;
         this.scheduleReplacementRepository = scheduleReplacementRepository;
@@ -62,6 +61,7 @@ public class ReplacementService {
         }
 
     }
+
     @Transactional
     public void saveReplacement(List<String[]> allRows) {
         List<GroupsReplacement> groupsReplacements = groupsReplacementRepository.findBy();

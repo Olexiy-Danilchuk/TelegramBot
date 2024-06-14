@@ -5,9 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-
 
 
 @Entity
@@ -31,7 +29,7 @@ public class User {
 
     private ReplyKeyboardMarkup keyboardMarkup;
 
-    public User( Long chatId, Boolean admin) {
+    public User(Long chatId, Boolean admin) {
         this.chatId = chatId;
         this.admin = admin;
     }

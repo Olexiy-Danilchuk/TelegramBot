@@ -16,7 +16,7 @@ public class DisciplineReplacement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private  String lectureReplacement;
+    private String lectureReplacement;
 
     @OneToMany(mappedBy = "disciplineReplacement")
     private List<ScheduleReplacement> ScheduleReplacement;

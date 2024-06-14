@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface GroupsReplacementRepository extends JpaRepository<GroupsReplacement,Long> {
+public interface GroupsReplacementRepository extends JpaRepository<GroupsReplacement, Long> {
     List<GroupsReplacement> findBy();
 }

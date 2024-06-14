@@ -1,22 +1,25 @@
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\repo\replacements\DisciplineReplacementRepository.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\TelegramBotApplication.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\config\BotConfig.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\model\replacements\GroupssReplacement.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\model\replacements\DisciplineReplacement.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\repo\replacements\ScheduleReplacementRepository.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\repo\replacements\GroupssReplacementRepository.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\model\SheduleWeek\Schedule.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\repo\replacements\TeacherReplacementRepository.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\model\SheduleWeek\Discipline.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\repo\ScheduleWeek\ScheduleRepository.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\service\TelegramBot.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\model\SheduleWeek\Groupss.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\repo\UserRepository.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\config\BotInitializer.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\repo\ScheduleWeek\GroupssRepository.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\model\SheduleWeek\Teacher.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\model\User.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\repo\ScheduleWeek\DisciplineRepository.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\model\replacements\ScheduleReplacement.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\repo\ScheduleWeek\TeacherRepository.java
-A:\java_lesson\джава про\лекція 15 (29.08)\TelegramBot\src\main\java\com\example\telegrambot\model\replacements\TeacherReplacement.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\model\replacements\DisciplineReplacement.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\controller\PingController.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\service\TelegramBot.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\repo\UserRepository.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\config\BotInitializer.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\repo\ScheduleWeek\TeacherRepository.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\model\SheduleWeek\Teacher.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\config\BotConfig.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\model\replacements\GroupsReplacement.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\model\replacements\ScheduleReplacement.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\model\SheduleWeek\Discipline.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\service\ReplacementService.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\repo\replacements\GroupsReplacementRepository.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\repo\replacements\TeacherReplacementRepository.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\TelegramBotApplication.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\service\FileService.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\model\User.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\repo\replacements\DisciplineReplacementRepository.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\model\replacements\TeacherReplacement.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\repo\ScheduleWeek\DisciplineRepository.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\repo\ScheduleWeek\ScheduleRepository.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\model\SheduleWeek\Schedule.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\repo\replacements\ScheduleReplacementRepository.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\model\SheduleWeek\Groups.java
+M:\TelegramBot\src\main\java\com\example\telegrambot\repo\ScheduleWeek\GroupsRepository.java
